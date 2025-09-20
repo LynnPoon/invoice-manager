@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: invoice-manager
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: DB_HOST
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: pserv
+    name: invoice-manager-db
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_DATABASE
+        value: invoice_manager
+      - key: MYSQL_USER
+        generateValue: true
+      - key: MYSQL_PASSWORD
+        generateValue: true
